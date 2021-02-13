@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import { loadPhillyForecast } from '../WeatherService';
+import colors from '../styles/colors';
 
 import DailyForecast from './DailyForecast';
 
@@ -45,9 +46,10 @@ export default function WeatherApp() {
     <View style={{ height: '100%' }}>
       <DailyForecast forecast={forecasts[visibleDay]} />
 
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ backgroundColor: colors.green, flexDirection: 'row' }}>
         <View style={{ width: '50%' }}>
           <Button
+            color={colors.green}
             disabled={visibleDay === 0}
             title='Prev'
             touchSoundDisabled
@@ -56,6 +58,7 @@ export default function WeatherApp() {
         </View>
         <View style={{ width: '50%' }}>
           <Button
+            color={colors.green}
             disabled={visibleDay + 1 === forecasts.length}
             title='Next'
             touchSoundDisabled
