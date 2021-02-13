@@ -8,6 +8,10 @@ const PHL_STATION_ID='KPHL';
 const PHL_WFO='PHI';
 const PHL_X_Y='45,77';
 
+// Points API : https://api.weather.gov/points/40.0027,-75.2581
+// Forecast API: https://api.weather.gov/gridpoints/PHI/45,77/forecast
+// Hourly Forecast: https://api.weather.gov/gridpoints/PHI/45,77/forecast/hourly
+
 async function makeRequest(path, params = {}) {
   try {
     const response = await fetch(`${URL_BASE}/${path}?${stringify(params)}`);
@@ -24,5 +28,5 @@ export async function loadPoint(lat = PHL_LAT, lng = PHL_LNG) {
 export async function loadPhillyForecast(lat = PHL_LAT, lng = PHL_LNG) {
   const response = await fetch(`https://api.weather.gov/gridpoints/${PHL_WFO}/${PHL_X_Y}/forecast`);
   const responseJson = await response.json();
-  return responseJson.properties.periods[0].detailedForecast;
+  return responseJson.properties.periods;
 }
