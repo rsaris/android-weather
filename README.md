@@ -24,3 +24,5 @@ This had previously been a native app written in Java but something is going wro
 * If `react-native run-android` hangs on `app:installDebug` run `adb kill-server && adb start-server`
 
 ## Run application on device (TODO)
+
+1. Follow instructions [here](https://reactnative.dev/docs/running-on-device)
