@@ -13,7 +13,8 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.13.8",
     "react": "16.13.1",
-    "react-native": "0.63.4"
+    "react-native": "0.63.4",
+    "react-native-swipe-gestures": "^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

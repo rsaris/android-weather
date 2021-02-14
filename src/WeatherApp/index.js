@@ -1,15 +1,17 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import {
-  Button,
   Text,
   View,
 } from 'react-native';
+
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 
 import { loadPhillyForecast } from '../WeatherService';
 import colors from '../styles/colors';
 
 import DailyForecast from './DailyForecast';
+import LoadingPage from './LoadingPage';
 
 const STATE_LOADING = 'loading';
 const STATE_ERROR = 'error';
@@ -20,52 +22,48 @@ export default function WeatherApp() {
   const [forecasts, setForecasts] = useState(undefined);
   const [visibleDay, setVisibleDay] = useState(0);
 
-  useEffect(() => {
-    async function loadWeather() {
-      try {
-        const forecasts = await loadPhillyForecast();
-        setForecasts(forecasts);
-        setDisplayState(STATE_DISPLAY);
-      } catch (err) {
-        setDisplayState(STATE_ERROR);
-      }
+  async function loadWeather() {
+    try {
+      setDisplayState(STATE_LOADING);
+      const forecasts = await loadPhillyForecast();
+      setForecasts(forecasts);
+      setVisibleDay(0);
+      setDisplayState(STATE_DISPLAY);
+    } catch (err) {
+      setDisplayState(STATE_ERROR);
     }
+  }
 
-    loadWeather();
-  }, []);
+  useEffect(() => { loadWeather(); }, []);
 
   if (displayState === STATE_LOADING) {
-    return <Text>Loading...</Text>;
+    return <LoadingPage />;
   }
 
   if (displayState === STATE_ERROR) {
     return <Text>There was an error...</Text>;
   }
 
-  return (
-    <View style={{ height: '100%' }}>
-      <DailyForecast forecast={forecasts[visibleDay]} />
+  function handleSwipeLeft() {
+    if (visibleDay >= forecasts.length - 1) { return; }
 
-      <View style={{ backgroundColor: colors.darkGray, flexDirection: 'row' }}>
-        <View style={{ width: '50%' }}>
-          <Button
-            color={colors.darkGray}
-            disabled={visibleDay === 0}
-            title='Prev'
-            touchSoundDisabled
-            onPress={() => { setVisibleDay(visibleDay - 1); }}
-          />
-        </View>
-        <View style={{ width: '50%' }}>
-          <Button
-            color={colors.darkGray}
-            disabled={visibleDay + 1 === forecasts.length}
-            title='Next'
-            touchSoundDisabled
-            onPress={() => { setVisibleDay(visibleDay + 1); }}
-          />
-        </View>
-      </View>
-    </View>
+    setVisibleDay(visibleDay + 1);
+  }
+
+  function handleSwipeRight() {
+    if (visibleDay <= 0) { return; }
+
+    setVisibleDay(visibleDay - 1);
+  }
+
+  return (
+    <GestureRecognizer
+      style={{ height: '100%' }}
+      onSwipeDown={() => { loadWeather(); }}
+      onSwipeLeft={handleSwipeLeft}
+      onSwipeRight={handleSwipeRight}
+    >
+      <DailyForecast forecast={forecasts[visibleDay]} />
+    </GestureRecognizer>
   );
 }
