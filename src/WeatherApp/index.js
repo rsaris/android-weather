@@ -46,10 +46,10 @@ export default function WeatherApp() {
     <View style={{ height: '100%' }}>
       <DailyForecast forecast={forecasts[visibleDay]} />
 
-      <View style={{ backgroundColor: colors.green, flexDirection: 'row' }}>
+      <View style={{ backgroundColor: colors.darkGray, flexDirection: 'row' }}>
         <View style={{ width: '50%' }}>
           <Button
-            color={colors.green}
+            color={colors.darkGray}
             disabled={visibleDay === 0}
             title='Prev'
             touchSoundDisabled
@@ -58,7 +58,7 @@ export default function WeatherApp() {
         </View>
         <View style={{ width: '50%' }}>
           <Button
-            color={colors.green}
+            color={colors.darkGray}
             disabled={visibleDay + 1 === forecasts.length}
             title='Next'
             touchSoundDisabled

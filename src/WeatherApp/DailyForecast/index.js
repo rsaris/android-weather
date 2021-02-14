@@ -15,7 +15,7 @@ import WeatherIcon from './WeatherIcon';
 
 function buildStyles(isDaytime) {
   const backgroundColor = isDaytime ? colors.blue : colors.darkGray;
-  const color = isDaytime ? colors.darkGray : colors.white;
+  const color = colors.white;
 
   return StyleSheet.create({
     container: {
@@ -63,7 +63,11 @@ function DailyForecast({ forecast }) {
     <ScrollView style={styles.container}>
       <Text style={styles.header}>{name}</Text>
       <WeatherIcon iconUrl={icon} style={styles.icon} />
-      <Text style={styles.subheader}>{shortForecast} ({temperature}° {temperatureUnit})</Text>
+      <Text style={styles.subheader}>
+        {shortForecast}
+        {' '}
+        ({temperature}° {temperatureUnit})
+      </Text>
       <Text style={styles.paragraph}>{detailedForecast}</Text>
     </ScrollView>
   );
