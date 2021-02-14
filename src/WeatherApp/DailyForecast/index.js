@@ -30,6 +30,7 @@ function buildStyles(isDaytime) {
       color,
       fontSize: fontSizes.h1,
       marginBottom: 20,
+      marginTop: 20,
       textAlign: 'center',
     },
     subheader: {
