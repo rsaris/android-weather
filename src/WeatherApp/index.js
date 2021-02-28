@@ -1,14 +1,10 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {
-  Text,
-  View,
-} from 'react-native';
+import { Button, Text, View } from 'react-native';
 
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 import { loadPhillyForecast } from '../WeatherService';
-import colors from '../styles/colors';
 
 import DailyForecast from './DailyForecast';
 import LoadingPage from './LoadingPage';
@@ -16,6 +12,8 @@ import LoadingPage from './LoadingPage';
 const STATE_LOADING = 'loading';
 const STATE_ERROR = 'error';
 const STATE_DISPLAY = 'display';
+
+const INCLUDE_BUTTONS = false;
 
 export default function WeatherApp() {
   const [displayState, setDisplayState] = useState(STATE_LOADING);
@@ -44,26 +42,41 @@ export default function WeatherApp() {
     return <Text>There was an error...</Text>;
   }
 
-  function handleSwipeLeft() {
-    if (visibleDay >= forecasts.length - 1) { return; }
+  const disablePrev = visibleDay <= 0;
+  const disableNext = visibleDay >= forecasts.length - 1;
+
+  function handleNext() {
+    if (disableNext) { return; }
 
     setVisibleDay(visibleDay + 1);
   }
 
-  function handleSwipeRight() {
-    if (visibleDay <= 0) { return; }
+  function handlePrev() {
+    if (disablePrev) { return; }
 
     setVisibleDay(visibleDay - 1);
   }
 
   return (
     <GestureRecognizer
-      style={{ height: '100%' }}
+      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
       onSwipeDown={() => { loadWeather(); }}
-      onSwipeLeft={handleSwipeLeft}
-      onSwipeRight={handleSwipeRight}
+      onSwipeLeft={handleNext}
+      onSwipeRight={handlePrev}
     >
-      <DailyForecast forecast={forecasts[visibleDay]} />
+      <DailyForecast forecast={forecasts[visibleDay]} style={{ flexGrow: 2 }} />
+      {
+        INCLUDE_BUTTONS && (
+          <View style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+            <View style={{ flexGrow: 1, height: '100%' }}>
+              <Button disabled={disablePrev} style={{ height: '100%' }} title="Prev" onPress={handlePrev} />
+            </View>
+            <View style={{ flexGrow: 1, height: '100%' }}>
+              <Button disabled={disableNext} style={{ height: '100%' }} title="Next" onPress={handleNext} />
+            </View>
+          </View>
+        )
+      }
     </GestureRecognizer>
   );
 }
