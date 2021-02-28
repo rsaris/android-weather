@@ -4,7 +4,7 @@ import { Button, Text, View } from 'react-native';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
 
-import { loadPhillyForecast } from '../WeatherService';
+import { loadForecast } from '../WeatherService';
 
 import DailyForecast from './DailyForecast';
 import LoadingPage from './LoadingPage';
@@ -23,7 +23,7 @@ export default function WeatherApp() {
   async function loadWeather() {
     try {
       setDisplayState(STATE_LOADING);
-      const forecasts = await loadPhillyForecast();
+      const forecasts = await loadForecast();
       setForecasts(forecasts);
       setVisibleDay(0);
       setDisplayState(STATE_DISPLAY);
