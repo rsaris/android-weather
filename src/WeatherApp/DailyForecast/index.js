@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 
 import {
-  Image,
-  ScrollView,
   StyleSheet,
   Text,
+  View,
 } from 'react-native';
 
 import colors from '../../styles/colors';
@@ -47,7 +46,7 @@ function buildStyles(isDaytime) {
   });
 }
 
-function DailyForecast({ forecast }) {
+function DailyForecast({ forecast, style }) {
   const {
     detailedForecast,
     icon,
@@ -61,7 +60,7 @@ function DailyForecast({ forecast }) {
   const styles = buildStyles(isDaytime);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={{ ...style, ...styles.container}}>
       <Text style={styles.header}>{name}</Text>
       <WeatherIcon iconUrl={icon} style={styles.icon} />
       <Text style={styles.subheader}>
@@ -70,7 +69,7 @@ function DailyForecast({ forecast }) {
         ({temperature}° {temperatureUnit})
       </Text>
       <Text style={styles.paragraph}>{detailedForecast}</Text>
-    </ScrollView>
+    </View>
   );
 }
 
