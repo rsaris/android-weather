@@ -1,12 +1,12 @@
 import { stringify } from 'query-string';
 
-const URL_BASE = 'https://api.weather.gov';
-const PHL_LAT='40.0026767';
-const PHL_LNG='-75.2581117';
+import {
+  loadForecastUrls,
+  loadLatLng,
+  storeForecastUrls,
+} from '../StorageService';
 
-const PHL_STATION_ID='KPHL';
-const PHL_WFO='PHI';
-const PHL_X_Y='45,77';
+const URL_BASE = 'https://api.weather.gov';
 
 // Points API : https://api.weather.gov/points/40.0027,-75.2581
 // Forecast API: https://api.weather.gov/gridpoints/PHI/45,77/forecast
@@ -21,12 +21,38 @@ async function makeRequest(path, params = {}) {
   }
 }
 
-export async function loadPoint(lat = PHL_LAT, lng = PHL_LNG) {
-  return makeRequest(`points/${lat},${lng}`);
+async function buildForecastUrls() {
+  const storedForecastUrls = await loadForecastUrls();
+  if (storedForecastUrls) { return storedForecastUrls; }
+
+  const { properties: { forecast, forecastHourly }} = await loadPoint();
+  storeForecastUrls({ forecast, forecastHourly });
+
+  return { forecast, forecastHourly };
 }
 
-export async function loadPhillyForecast(lat = PHL_LAT, lng = PHL_LNG) {
-  const response = await fetch(`https://api.weather.gov/gridpoints/${PHL_WFO}/${PHL_X_Y}/forecast`);
+/**
+ * Returns:
+ *
+ * properties: {
+ *   forecast: << URL to get daily forecasts >>,
+ *   forecastHourly: << URL to get hourly forecast >>,
+ * }
+ */
+async function loadPoint() {
+  const { lat, lng } = await loadLatLng();
+  return await makeRequest(`points/${lat},${lng}`);
+}
+
+async function loadForecast() {
+  const { forecast } = await buildForecastUrls();
+
+  const response = await fetch(forecast);
   const responseJson = await response.json();
   return responseJson.properties.periods;
 }
+
+
+export {
+  loadForecast,
+};
