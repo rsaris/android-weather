@@ -32,7 +32,13 @@ function buildStyles(isDaytime) {
       marginTop: 20,
       textAlign: 'center',
     },
-    subheader: {
+    textForecast: {
+      color,
+      fontSize: fontSizes.h3,
+      marginBottom: 10,
+      textAlign: 'center',
+    },
+    textTemperature: {
       color,
       fontSize: fontSizes.h3,
       marginBottom: 20,
@@ -63,10 +69,11 @@ function DailyForecast({ forecast, style }) {
     <View style={{ ...style, ...styles.container}}>
       <Text style={styles.header}>{name}</Text>
       <WeatherIcon iconUrl={icon} style={styles.icon} />
-      <Text style={styles.subheader}>
+      <Text style={styles.textForecast}>
         {shortForecast}
-        {' '}
-        ({temperature}° {temperatureUnit})
+      </Text>
+      <Text style={styles.textTemperature}>
+        {temperature}° {temperatureUnit}
       </Text>
       <Text style={styles.paragraph}>{detailedForecast}</Text>
     </View>
