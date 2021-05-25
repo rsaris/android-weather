@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Default to PHL
-const DEFAULT_LAT='40.0026767';
-const DEFAULT_LNG='-75.2581117';
+const DEFAULT_LAT = '40.0026767';
+const DEFAULT_LNG = '-75.2581117';
 
 const STORAGE_KEY_FORECAST_URLS = 'forecastUrls';
 const STORAGE_KEY_LAT_LNG = 'latlng';

@@ -4,14 +4,14 @@ import propTypes from 'prop-types';
 import {
   Alert,
   Image,
+  StyleSheet,
   TouchableOpacity,
-  View,
 } from 'react-native';
 
 const iconDir = '../../images';
 
-const iconCloudy = require(`${iconDir}/weather_cloudy.png`);
-const iconRain = require(`${iconDir}/weather_rain.png`);
+// const iconCloudy = require(`${iconDir}/weather_cloudy.png`);
+// const iconRain = require(`${iconDir}/weather_rain.png`);
 const iconSnow = require(`${iconDir}/weather_snow.png`);
 const iconThunderstorm = require(`${iconDir}/weather_thunderstorm.png`);
 const iconWintryMix = require(`${iconDir}/weather_wintry_mix.png`);
@@ -39,13 +39,16 @@ const ICON_URL_PART_SLEET = 'sleet';
 const ICON_URL_PART_SNOW = 'snow';
 const ICON_URL_PART_SUNNY = 'sct';
 const ICON_URL_PART_SKC = 'skc';
+const ICON_URL_PART_THUNDERSTORM = 'tsra';
 
 function iconSource(iconUrl) {
   let icon = iconUnknown;
 
   const isNight = iconUrl.includes('night');
 
-  if (
+  if (iconUrl.includes(ICON_URL_PART_THUNDERSTORM)) {
+    icon = isNight ? iconNightThunderstorm : iconThunderstorm;
+  } else if (
     iconUrl.includes(ICON_URL_PART_FROZEN_RAIN) ||
     iconUrl.includes(ICON_URL_PART_RAIN_SNOW) ||
     iconUrl.includes(ICON_URL_PART_SLEET)
@@ -71,6 +74,17 @@ function iconSource(iconUrl) {
   return icon;
 }
 
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    height: 150,
+    width: 150,
+  },
+});
+
 function WeatherIcon({ iconUrl, style }) {
   const [showOriginal, setShowOriginal] = useState(false);
   let imageSource;
@@ -93,12 +107,12 @@ function WeatherIcon({ iconUrl, style }) {
 
   return (
     <TouchableOpacity
-      style={{ alignItems: 'center', justifyContent: 'center', ...style }}
+      style={{ ...styles.container, ...style }}
       onPress={handleImagePress}
     >
       <Image
         source={imageSource}
-        style={{ height: 150, width: 150 }}
+        style={styles.image}
       />
     </TouchableOpacity>
   );

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, Text, View } from 'react-native';
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
 
@@ -15,6 +20,29 @@ const STATE_DISPLAY = 'display';
 
 const INCLUDE_BUTTONS = false;
 
+const styles = StyleSheet.create({
+  button: {
+    height: '100%',
+  },
+  buttonBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+  },
+  buttonContainer: {
+    flexGrow: 1,
+    height: '100%',
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+  forecastContainer: {
+    flexGrow: 2,
+  },
+});
+
 export default function WeatherApp() {
   const [displayState, setDisplayState] = useState(STATE_LOADING);
   const [forecasts, setForecasts] = useState(undefined);
@@ -23,8 +51,8 @@ export default function WeatherApp() {
   async function loadWeather() {
     try {
       setDisplayState(STATE_LOADING);
-      const forecasts = await loadForecast();
-      setForecasts(forecasts);
+      const forecastResponse = await loadForecast();
+      setForecasts(forecastResponse);
       setVisibleDay(0);
       setDisplayState(STATE_DISPLAY);
     } catch (err) {
@@ -59,20 +87,20 @@ export default function WeatherApp() {
 
   return (
     <GestureRecognizer
-      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+      style={styles.container}
       onSwipeDown={() => { loadWeather(); }}
       onSwipeLeft={handleNext}
       onSwipeRight={handlePrev}
     >
-      <DailyForecast forecast={forecasts[visibleDay]} style={{ flexGrow: 2 }} />
+      <DailyForecast forecast={forecasts[visibleDay]} style={styles.forecastContainer} />
       {
         INCLUDE_BUTTONS && (
-          <View style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-            <View style={{ flexGrow: 1, height: '100%' }}>
-              <Button disabled={disablePrev} style={{ height: '100%' }} title="Prev" onPress={handlePrev} />
+          <View style={styles.buttonBar}>
+            <View style={styles.buttonContainer}>
+              <Button disabled={disablePrev} style={styles.button} title="Prev" onPress={handlePrev} />
             </View>
-            <View style={{ flexGrow: 1, height: '100%' }}>
-              <Button disabled={disableNext} style={{ height: '100%' }} title="Next" onPress={handleNext} />
+            <View style={styles.buttonContainer}>
+              <Button disabled={disableNext} style={styles.button} title="Next" onPress={handleNext} />
             </View>
           </View>
         )

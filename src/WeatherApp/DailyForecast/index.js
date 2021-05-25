@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import propTypes from 'prop-types';
 
 import {
@@ -42,7 +42,7 @@ function buildStyles(isDaytime) {
       color,
       fontSize: fontSizes.p,
       textAlign: 'center',
-    }
+    },
   });
 }
 
