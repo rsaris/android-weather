@@ -17,8 +17,8 @@ This had previously been a native app written in Java but something is going wro
 1. Install dependencies by running `yarn install` in the root directory
 
 ## Running the application
-1. Build the app by running `npx react-native run-android`
 1. Run the app server by running `npx react-native start`
+1. Build the app by running `npx react-native run-android`
 
 ### Debug steps
 * If `react-native run-android` hangs on `app:installDebug` run `adb kill-server && adb start-server`

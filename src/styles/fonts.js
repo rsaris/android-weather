@@ -14,4 +14,4 @@ fontSizes.fineprint = fontSizes.sm;
 
 export {
   fontSizes,
-}
+};
