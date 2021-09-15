@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
 
 function DisplayPage({
   forecasts,
+  onOpenSettings,
   onRetry,
  }) {
   const [visibleDay, setVisibleDay] = useState(0);
@@ -62,6 +63,7 @@ function DisplayPage({
       onSwipeDown={onRetry}
       onSwipeLeft={handleNext}
       onSwipeRight={handlePrev}
+      onSwipeUp={onOpenSettings}
     >
       <DailyForecast forecast={forecasts[visibleDay]} style={styles.forecastContainer} />
       {
@@ -82,6 +84,7 @@ function DisplayPage({
 
 DisplayPage.propTypes = {
   forecasts: propTypes.array,
+  onOpenSettings: propTypes.func.isRequired,
   onRetry: propTypes.func.isRequired,
 };
 

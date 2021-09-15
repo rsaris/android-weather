@@ -1,14 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { loadForecast } from '../WeatherService';
+import {
+  loadForecast,
+  resetLocation,
+} from '../WeatherService';
 
 import DisplayPage from './DisplayPage';
 import ErrorPage from './ErrorPage';
 import LoadingPage from './LoadingPage';
+import LocationPage from './LocationPage';
 
 const STATE_LOADING = 'loading';
 const STATE_ERROR = 'error';
 const STATE_DISPLAY = 'display';
+const STATE_LOCATION = 'location';
 
 export default function WeatherApp() {
   const [displayState, setDisplayState] = useState(STATE_LOADING);
@@ -25,11 +30,29 @@ export default function WeatherApp() {
     }
   }
 
+  const handleCloseSettings = useCallback(() => {
+    loadWeather();
+  }, []);
+
+  const handleOpenSettings = useCallback(() => {
+    setDisplayState(STATE_LOCATION);
+  }, []);
+
   const handleRetry = useCallback(() => {
     if (displayState === STATE_LOADING) { return; }
 
     loadWeather();
   }, [displayState]);
+
+  const handleResetLocation = useCallback(async () => {
+    setDisplayState(STATE_LOADING);
+    try {
+      await resetLocation();
+      loadWeather();
+    } catch (err) {
+      setDisplayState(STATE_ERROR);
+    }
+  }, []);
 
   useEffect(() => { loadWeather(); }, []);
 
@@ -37,12 +60,25 @@ export default function WeatherApp() {
     case STATE_LOADING:
       return <LoadingPage />;
     case STATE_ERROR:
-      return <ErrorPage onRetry={handleRetry} />;
+      return (
+        <ErrorPage
+          onResetLocation={handleResetLocation}
+          onRetry={handleRetry}
+        />
+      );
     case STATE_DISPLAY:
       return (
         <DisplayPage
           forecasts={forecasts}
+          onOpenSettings={handleOpenSettings}
           onRetry={handleRetry}
+        />
+      );
+    case STATE_LOCATION:
+      return (
+        <LocationPage
+          onCloseSettings={handleCloseSettings}
+          onResetLocation={handleResetLocation}
         />
       );
   }
