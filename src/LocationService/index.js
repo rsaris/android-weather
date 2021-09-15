@@ -11,7 +11,6 @@ async function fetchCurrentLatLng() {
       reject,
       {
         enableHighAccuracy: false,
-        showLocationDialog: true,
       },
     );
   });
