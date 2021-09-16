@@ -11,6 +11,12 @@ import {
 import colors from '../styles/colors';
 import { messagePageStyleSheet } from '../styles/layout';
 
+const styles = StyleSheet.create({
+  buttonMargins: {
+    marginBottom: 20,
+  },
+});
+
 function ErrorPage({ onResetLocation, onRetry }) {
   return (
     <View style={messagePageStyleSheet.container}>
@@ -18,16 +24,20 @@ function ErrorPage({ onResetLocation, onRetry }) {
         There was an error...
       </Text>
       <View>
-        <Button
-          color={colors.green}
-          title="Reset location"
-          onPress={onResetLocation}
-        />
-        <Button
-          color={colors.green}
-          title="Retry"
-          onPress={onRetry}
-        />
+        <View style={styles.buttonMargins}>
+          <Button
+            color={colors.green}
+            title="Reset location"
+            onPress={onResetLocation}
+          />
+        </View>
+        <View>
+          <Button
+            color={colors.green}
+            title="Retry"
+            onPress={onRetry}
+          />
+        </View>
       </View>
     </View>
   );

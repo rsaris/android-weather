@@ -13,7 +13,7 @@ import LocationPage from './LocationPage';
 const STATE_LOADING = 'loading';
 const STATE_ERROR = 'error';
 const STATE_DISPLAY = 'display';
-const STATE_LOCATION = 'location';
+const STATE_SETTINGS = 'settings';
 
 export default function WeatherApp() {
   const [displayState, setDisplayState] = useState(STATE_LOADING);
@@ -35,7 +35,7 @@ export default function WeatherApp() {
   }, []);
 
   const handleOpenSettings = useCallback(() => {
-    setDisplayState(STATE_LOCATION);
+    setDisplayState(STATE_SETTINGS);
   }, []);
 
   const handleRetry = useCallback(() => {
@@ -74,7 +74,7 @@ export default function WeatherApp() {
           onRetry={handleRetry}
         />
       );
-    case STATE_LOCATION:
+    case STATE_SETTINGS:
       return (
         <LocationPage
           onCloseSettings={handleCloseSettings}
