@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
+import { useBackHandler } from '@react-native-community/hooks';
+
 import colors from '../styles/colors';
 import { messagePageStyleSheet } from '../styles/layout';
 
@@ -24,6 +26,11 @@ function LocationPage({ onCloseSettings, onResetLocation }) {
     }
     seedLatLng();
   }, []);
+
+  useBackHandler(() => {
+    onCloseSettings();
+    return true;
+  });
 
   return (
     <GestureRecognizer
