@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import {
-  loadForecast,
-  resetLocation,
-} from '../WeatherService';
+import useForecasts from '../useForecasts';
 
 import DisplayPage from './DisplayPage';
 import ErrorPage from './ErrorPage';
@@ -17,22 +14,30 @@ const STATE_SETTINGS = 'settings';
 
 export default function WeatherApp() {
   const [displayState, setDisplayState] = useState(STATE_LOADING);
-  const [forecasts, setForecasts] = useState(undefined);
+  const {
+    forecasts,
+    reloadForecasts,
+    reloadLocation,
+  } = useForecasts();
 
-  async function loadWeather() {
+  const loadForecasts = useCallback(async () => {
     try {
       setDisplayState(STATE_LOADING);
-      const forecastResponse = await loadForecast();
-      setForecasts(forecastResponse);
+      await reloadForecasts();
       setDisplayState(STATE_DISPLAY);
     } catch (err) {
+      console.log(`Error loading forecasts: ${err.message}`);
       setDisplayState(STATE_ERROR);
     }
-  }
+  }, [reloadForecasts]);
 
   const handleCloseSettings = useCallback(() => {
-    loadWeather();
-  }, []);
+    if (forecasts) {
+      setDisplayState(STATE_DISPLAY);
+    } else {
+      loadForecasts();
+    }
+  }, [forecasts, loadForecasts]);
 
   const handleOpenSettings = useCallback(() => {
     setDisplayState(STATE_SETTINGS);
@@ -41,20 +46,21 @@ export default function WeatherApp() {
   const handleRetry = useCallback(() => {
     if (displayState === STATE_LOADING) { return; }
 
-    loadWeather();
-  }, [displayState]);
+    loadForecasts();
+  }, [displayState, loadForecasts]);
 
   const handleResetLocation = useCallback(async () => {
     setDisplayState(STATE_LOADING);
     try {
-      await resetLocation();
-      loadWeather();
+      await reloadLocation();
+      setDisplayState(STATE_SETTINGS);
     } catch (err) {
+      console.log(`Error resetting location: ${err.message}`);
       setDisplayState(STATE_ERROR);
     }
-  }, []);
+  }, [reloadLocation]);
 
-  useEffect(() => { loadWeather(); }, []);
+  useEffect(() => { loadForecasts(); }, [loadForecasts]);
 
   switch (displayState) {
     case STATE_LOADING:

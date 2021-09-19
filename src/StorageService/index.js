@@ -1,20 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const STORAGE_KEY_FORECAST_URLS = 'forecastUrls';
+const STORAGE_KEY_FORECAST_URL = 'forecastUrl';
 const STORAGE_KEY_LAT_LNG = 'latlng';
 
-async function loadForecastUrls() {
-  const storedUrls = await AsyncStorage.getItem(STORAGE_KEY_FORECAST_URLS);
-  if (storedUrls) { return JSON.parse(storedUrls); }
-
-  return undefined;
+async function loadForecastUrl() {
+  return await AsyncStorage.getItem(STORAGE_KEY_FORECAST_URL);
 }
 
-async function storeForecastUrls({ forecast, forecastHourly }) {
-  return await AsyncStorage.setItem(
-    STORAGE_KEY_FORECAST_URLS,
-    JSON.stringify({ forecast, forecastHourly }),
-  );
+async function storeForecastUrl(forecastUrl) {
+  return await AsyncStorage.setItem(STORAGE_KEY_FORECAST_URL, forecastUrl);
 }
 
 async function loadLatLng() {
@@ -32,8 +26,8 @@ async function storeLatLng({ lat, lng }) {
 }
 
 export {
-  loadForecastUrls,
-  storeForecastUrls,
+  loadForecastUrl,
+  storeForecastUrl,
   loadLatLng,
   storeLatLng,
 };
