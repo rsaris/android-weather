@@ -12,9 +12,9 @@ This had previously been a native app written in Java but something is going wro
 1. Create a device
 
 ## Install tools
-1. Install node via nvm [link](https://github.com/nvm-sh/nvm)
-1. Install yarn [link](https://classic.yarnpkg.com/en/docs/install/)
+1. Install node and yarn via volta [link](https://docs.volta.sh/guide/getting-started)
 1. Install dependencies by running `yarn install` in the root directory
+1. Install watchman `brew install watchman`
 
 ## Running the application
 1. Run the app server by running `npx react-native start`
