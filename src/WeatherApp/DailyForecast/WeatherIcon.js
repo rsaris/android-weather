@@ -31,6 +31,7 @@ const iconUnknown = require(`${iconDir}/weather_unknown.png`);
 
 const ICON_URL_PART_BKN = 'bkn';
 const ICON_URL_PART_FEW = 'few';
+const ICON_URL_PART_FOG = 'fog';
 const ICON_URL_PART_FROZEN_RAIN = 'fzra';
 const ICON_URL_PART_OVERCAST = 'ovc';
 const ICON_URL_PART_RAIN = 'rain';
@@ -60,7 +61,8 @@ function iconSource(iconUrl) {
     icon = isNight ? iconNightRain : iconDayRain;
   } else if (
     iconUrl.includes(ICON_URL_PART_OVERCAST) ||
-    iconUrl.includes(ICON_URL_PART_BKN)
+    iconUrl.includes(ICON_URL_PART_BKN) ||
+    iconUrl.includes(ICON_URL_PART_FOG)
   ) {
     icon = isNight ? iconNightCloudy : iconDayCloudy;
   } else if (
